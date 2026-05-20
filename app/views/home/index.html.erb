@@ -1,0 +1,16 @@
+<div data-controller="weather"
+    data-weather-url-value="<%= api_weather_index_path %>"
+>
+  <h1 class="font-bold text-4xl">Weather</h1>
+  <p>Enter an address to get the weather</p>
+  <%= form_with url: api_weather_index_path, method: :get, data: { action: "submit->weather#submit" } do |form| %>
+    <%= form.number_field :street_number, placeholder: "Street Number", class: "border-2 border-gray-300 rounded-md p-2 mb-2" %>
+    <%= form.text_field :street_name, placeholder: "Street Name", class: "border-2 border-gray-300 rounded-md p-2 mb-2" %><br/>
+    <%= form.text_field :city, required: true, placeholder: "City", class: "border-2 border-gray-300 rounded-md p-2 mb-2" %>
+    <%= form.text_field :state, required: true, placeholder: "State", class: "border-2 border-gray-300 rounded-md p-2 mb-2" %><br/>
+    <%= form.text_field :zip_code, required: true, placeholder: "Zip Code", class: "border-2 border-gray-300 rounded-md p-2 mb-2" %><br/>
+    <%= form.submit "Get Weather", class: "bg-blue-500 text-white px-4 py-2 rounded-md mt-2" %>
+  <% end %>
+
+  <div id="weather-data" data-weather-target="forecast"></div>
+</div>

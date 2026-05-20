@@ -1,0 +1,28 @@
+<p><%= weather.cached ? "Cached 💵" : "Not Cached 💸" %></p>
+
+<div>
+  <p>Current Temperature: <%= weather.current_temperature %></p>
+  <p>Today's High Temperature: <%= weather.current_high_temperature %></p>
+  <p>Today's Low Temperature: <%= weather.current_low_temperature %></p>
+</div>
+
+<h3 class="text-lg font-bold mt-4">Daily Forecast</h3>
+
+<table class="table-fixed border-collapse border border-gray-300">
+  <thead>
+    <tr class="border-b border-gray-300">
+      <th>Date</th>
+      <th>High Temperature</th>
+      <th>Low Temperature</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% weather.daily_forecast.each do |day| %>
+      <tr class="border-b border-gray-300">
+        <td class="text-center w-1/3"><%= day[:time] %></td>
+        <td class="text-center w-1/3"><%= day[:high_temperature] %></td>
+        <td class="text-center w-1/3"><%= day[:low_temperature] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
