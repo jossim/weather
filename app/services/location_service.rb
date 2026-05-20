@@ -1,7 +1,9 @@
+# Use the Census Geocoding API to get the latitude & longitude for a given address.
 class LocationService
   BASE_URL = "https://geocoding.geo.census.gov/geocoder/locations/onelineaddress"
 
   def self.get_location_data(address)
+    # Check if zip code has been cached.
     if address[:zip_code].present? and Rails.cache.exist?("location_data_#{address[:zip_code]}")
       Rails.logger.debug("LocationService location_data_#{address[:zip_code]} found in cache")
       return Rails.cache.read("location_data_#{address[:zip_code]}")
@@ -17,6 +19,8 @@ class LocationService
       zip_code: location["result"]["addressMatches"][0]["addressComponents"]["zip"]
     }
 
+    # Write location data to cache. Since zip codes aren't expected to change,
+    # keep it in cache for a year.
     Rails.cache.write("location_data_#{address[:zip_code]}", location_data, expires_in: 1.year)
 
     location_data
@@ -34,6 +38,7 @@ class LocationService
 
     address_data = JSON.parse(response.body)
 
+    # Check if an address exists in the result
     if address_data["result"]["addressMatches"].empty?
       Rails.logger.error("LocationService address_data: #{address_data}")
       raise ActionController::RoutingError.new("Address Not Found")
@@ -66,8 +71,3 @@ class LocationService
     conn
   end
 end
-
-
-# curl "https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address=14001+Conner+Downs,+Pflugerville,+TX+78660&benchmark=Public_AR_Current&format=json"
-
-# {"result":{"input":{"address":{"address":"14001 Conner Downs, Pflugerville, TX 78660"},"benchmark":{"isDefault":true,"benchmarkDescription":"Public Address Ranges - Current Benchmark","id":"4","benchmarkName":"Public_AR_Current"}},"addressMatches":[{"tigerLine":{"side":"R","tigerLineId":"63966885"},"coordinates":{"x":-97.647403995334,"y":30.417062876853},"addressComponents":{"zip":"78660","streetName":"CONNER DOWNS","preType":"","city":"PFLUGERVILLE","preDirection":"","suffixDirection":"","fromAddress":"13933","state":"TX","suffixType":"DR","toAddress":"14007","suffixQualifier":"","preQualifier":""},"matchedAddress":"14001 CONNER DOWNS DR, PFLUGERVILLE, TX, 78660"}]}}

@@ -1,5 +1,6 @@
 class Api::WeatherController < ActionController::API
   rescue_from ActionController::RoutingError, with: :address_not_found
+
   def index
     weather_data = WeatherService.get_weather(weather_params.to_h)
     weather = Weather.new(weather_data)

@@ -1,24 +1,11 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a small application that provides weather forecasts based on address.
 
-Things you may want to cover:
+## Setup
 
-* Ruby version
+Ensure Ruby 4.0.2 is installed. Run `bundle` to install dependencies, and `rails db:prepare` to setup the database (SQLite). `bin/dev` is the best way to run the application in development.
 
-* System dependencies
+## Testing
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+RSpec is used for testing, to run the test suite, run `rspec spec/` in the terminal.
